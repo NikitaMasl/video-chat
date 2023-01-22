@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist",
+    "noEmit": false
+  },
+  "exclude": [
+    "./dist",
+  ],
+  "include": [
+    "./src/index.ts",
+    "./src/migrations/*.ts"
+  ]
+}

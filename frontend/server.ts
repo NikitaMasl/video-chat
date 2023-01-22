@@ -1,0 +1,76 @@
+import next from 'next';
+import express from 'express';
+import compression from 'compression';
+import i18nextMiddleware from 'next-i18next/middleware';
+import { applyServerHMR } from 'i18next-hmr/server';
+import { createProxyMiddleware, Options } from 'http-proxy-middleware';
+import { join } from 'path';
+import { parse } from 'url';
+import cookieParser from 'cookie-parser';
+
+import nextI18next from './i18n';
+
+const devApiUrl = process.env.DEV_API_URL || 'http://localhost:8000';
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+
+const env = process.env.NODE_ENV;
+const dev = env !== 'production';
+
+const devProxy: Record<string, Options> = {
+  '/api': {
+    target: `${devApiUrl}/api/`,
+    pathRewrite: { '^/api': '/' },
+    changeOrigin: true,
+  },
+};
+
+const app = next({
+  dev,
+});
+
+const handle = app.getRequestHandler();
+
+if (process.env.NODE_ENV !== 'production') {
+  applyServerHMR(nextI18next.i18n);
+}
+
+app
+  .prepare()
+  .then(() => {
+    const server = express();
+    server.use(i18nextMiddleware(nextI18next));
+
+    server.use(cookieParser());
+
+    if (!dev) {
+      server.use(compression());
+    }
+
+    // Set up the proxy.
+    if (dev && devProxy) {
+      Object.keys(devProxy).map((context) => {
+        server.use(createProxyMiddleware(context, devProxy[context]));
+      });
+    }
+
+    // Default catch-all handler to allow Next.js to handle all other routes
+    server.all('*', (req, res) => {
+      const parsedUrl = parse(req.url, true);
+      const { pathname } = parsedUrl;
+
+      if (pathname === '/service-worker.js' || pathname?.startsWith('/workbox-')) {
+        const filePath = join(__dirname, '.next', pathname);
+        app.serveStatic(req, res, filePath);
+      } else {
+        handle(req, res, parsedUrl);
+      }
+    });
+
+    server.listen(port, () => {
+      console.log(`Frontend is ready on port ${port} [${env}]`);
+    });
+  })
+  .catch((err) => {
+    console.log('An error occurred, unable to start the server');
+    console.log('Error; server.ts;', err);
+  });

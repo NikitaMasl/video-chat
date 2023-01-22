@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+  mongo:
+    restart: unless-stopped
+    image: mongo:4.4.3
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    hostname: mongo
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    ports:
+      - 27020:27017
+    volumes:
+      - /tmp/video-chat/db:/data/db
