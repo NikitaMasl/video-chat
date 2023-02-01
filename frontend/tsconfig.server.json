@@ -5,5 +5,5 @@
     "outDir": "dist",
     "noEmit": false
   },
-  "include": ["./server.ts"]
+  "include": ["./src/app/server.ts"]
 }

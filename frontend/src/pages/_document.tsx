@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import { muiTheme } from '../const/MuiTheme';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { muiTheme } from 'shared/const/MuiTheme';
 
 class MyDocument extends Document {
     render(): ReactElement {
@@ -22,8 +22,8 @@ class MyDocument extends Document {
                         content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
                     />
                     <link
+                        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
                         rel="stylesheet"
-                        href="https://fonts.googleapis.com/css?family=Open Sans:300,400,500,600,700,900&display=swap"
                     />
                 </Head>
                 <body>

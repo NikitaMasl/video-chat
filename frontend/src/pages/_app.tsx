@@ -1,9 +1,14 @@
 import React from 'react';
 import { NextPageContext } from 'next';
 import { ServerResponse } from 'http';
-import { appWithTranslation } from '../../i18n';
+import { Provider } from 'react-redux';
 import Head from 'next/head';
 import { AppContext, AppProps } from 'next/app';
+import { appWithTranslation } from 'next-i18next';
+import 'app/styles/styles.scss';
+
+import { store } from 'app/store/store';
+import { MaterialUiCore } from 'widgets/containers/MaterialUiCore';
 
 export interface VideoChatServerResponse extends ServerResponse {
     authorized: boolean;
@@ -23,7 +28,11 @@ const App = (props: AppProps) => {
     return (
         <>
             <Head>Video Chat</Head>
-            <Component {...pageProps} />
+            <Provider store={store}>
+                <MaterialUiCore>
+                    <Component {...pageProps} />
+                </MaterialUiCore>
+            </Provider>
         </>
     );
 };

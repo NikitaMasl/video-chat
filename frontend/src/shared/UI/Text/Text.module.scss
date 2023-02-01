@@ -1,0 +1,78 @@
+@import '../../../app/styles/rem.scss';
+
+.text {
+    padding: 0;
+    margin: 0;
+}
+
+.s1 {
+    font-size: var(--text-size-s1);
+}
+.s2 {
+    font-size: var(--text-size-s2);
+}
+.s3 {
+    font-size: var(--text-size-s3);
+}
+.s4 {
+    font-size: var(--text-size-s4);
+}
+.s5 {
+    font-size: var(--text-size-s5);
+}
+.s6 {
+    font-size: var(--text-size-s6);
+}
+
+.w300 {
+    font-weight: 300;
+}
+.w400 {
+    font-weight: 400;
+}
+.w600 {
+    font-weight: 600;
+}
+
+.di {
+    display: inline;
+}
+.db {
+    display: block;
+}
+.dib {
+    display: inline-block;
+}
+
+.left {
+    text-align: left;
+}
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
+.justify {
+    text-align: justify;
+}
+
+.cd {
+    color: var(--text-color-default);
+}
+.cs {
+    color: var(--text-color-secondary);
+}
+.wh {
+    color: var(--white);
+}
+.cdb {
+    color: var(--dark-blue);
+}
+.cdanger {
+    color: var(--red);
+}
+
+.sub {
+    opacity: 0.3;
+}

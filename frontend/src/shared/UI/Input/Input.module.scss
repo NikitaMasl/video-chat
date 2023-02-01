@@ -1,0 +1,109 @@
+@import '../../../app/styles/rem.scss';
+
+.root {
+    .inputLabelRoot + .inputRoot {
+        margin-top: rem(24px);
+    }
+
+    &.error .inputRoot {
+        border: 1px solid var(--red);
+    }
+
+    &.error .inputLabelRoot,
+    &.error .inputLabelRoot:after {
+        color: var(--red);
+    }
+
+    &.hidden {
+        position: absolute;
+        opacity: 0;
+        height: 0;
+        width: 0;
+    }
+
+    .inputFocused {
+        color: var(--text-color-default);
+    }
+
+    .inputUnderline {
+        &::after {
+            border-color: var(--text-color-default);
+        }
+
+        &:hover {
+            border-bottom: 0;
+        }
+    }
+
+    .inputLabelFocused {
+        color: var(--text-color-default);
+    }
+
+    .formHelperTextStyle {
+        color: var(--red);
+        font-size: var(--text-size-s6);
+        font-family: inherit;
+    }
+}
+.inputRoot {
+    padding: rem(5px 7px 5px 7px);
+    border-radius: rem(10px);
+    background-color: var(--white);
+    border: rem(1px) solid transparent;
+    transition: border-color 0.2s ease-out;
+    color: var(--text-color-default);
+    font-size: rem(14px);
+    height: rem(45px);
+
+    &.inputFocused {
+        border: rem(1px) solid var(--dark-blue);
+    }
+
+    &.multiline {
+        align-items: flex-start;
+        height: rem(120px);
+    }
+
+    .inputBase {
+        -moz-appearance: textfield;
+        color: var(--text-color-default);
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            border-radius: rem(14px);
+            width: rem(5px);
+        }
+        &::-webkit-scrollbar-track {
+            border-radius: rem(14px);
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: rem(28px);
+            background: rgba(19, 19, 46, 0.1);
+        }
+
+        &.styledPlaceholder {
+            font-family: var(--font-family-default);
+        }
+    }
+
+    .inputBase::-webkit-outer-spin-button,
+    .inputBase::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+.inputLabelRoot {
+    margin-top: rem(5px);
+    color: var(--text-color-default);
+    font-size: rem(18px);
+    font-family: var(--font-family-default);
+}
+
+.disable {
+    display: none;
+}
+
+.placeholder {
+    color: var(--dark-gray);
+}

@@ -1,0 +1,55 @@
+@import './rem';
+
+:root {
+    --white: #fff;
+    --black: #03010a;
+    --dark-gray: #a1a9bb;
+
+    --dark-blue: #251f47;
+    --light-blue: #89a6fb;
+
+    --red: #ff0000;
+
+    --light-yellow: #ece2d0;
+
+    --text-size-s1: #{rem(30px)};
+    --text-size-s2: #{rem(26px)};
+    --text-size-s3: #{rem(20px)};
+    --text-size-s4: #{rem(16px)};
+    --text-size-s5: #{rem(14px)};
+    --text-size-s6: #{rem(12px)};
+
+    --text-color-default: var(--black);
+    --text-color-secondary: var(--dark-gray);
+
+    --font-family-default: 'Roboto';
+
+    --bg-default: var(--light-yellow);
+}
+
+body {
+    height: 100%;
+    overflow-x: hidden;
+    color: var(--text-color-default);
+    font-family: var(--font-family-default) !important;
+    background-color: var(--bg-default);
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: var(--text-color-default);
+    font-family: var(--font-family-default);
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#__next {
+    height: 100%;
+}

@@ -1,39 +1,47 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "jsx": "preserve",
+    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "target": "es2022",
+    "sourceMap": true,
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "rootDirs": [
+      ".",
+      
+    ],
+    "incremental": true,
+    "allowJs": false,
+    "strict": true,
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
-    "incremental": true
+    "isolatedModules": true
   },
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "next.config.js",
     "i18n.js"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

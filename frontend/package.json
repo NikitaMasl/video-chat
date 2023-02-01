@@ -21,13 +21,17 @@
         ]
     },
     "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@hookform/resolvers": "2.9.10",
         "@material-ui/core": "4.12.4",
         "@mui/icons-material": "5.11.0",
         "@mui/material": "5.11.5",
+        "@reduxjs/toolkit": "1.9.1",
         "cnbuilder": "3.1.0",
         "compression": "1.7.4",
         "cookie-parser": "1.4.6",
-        "dotenv": "^16.0.3",
+        "dotenv": "16.0.3",
         "express": "4.18.2",
         "http-proxy-middleware": "2.0.6",
         "i18next-hmr": "1.11.1",
@@ -35,11 +39,12 @@
         "lodash": "4.17.21",
         "nanoid": "4.0.0",
         "next": "13.1.4",
-        "next-i18next": "4.5.0",
+        "next-i18next": "11.2.2",
         "next-transpile-modules": "10.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-hook-form": "7.42.1"
+        "react-hook-form": "7.42.1",
+        "react-redux": "^8.0.5"
     },
     "engines": {
         "node": ">=18.6"
