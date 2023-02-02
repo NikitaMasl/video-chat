@@ -6,7 +6,7 @@
     }
 
     &.error .inputRoot {
-        border: 1px solid var(--red);
+        border: rem(1px) solid var(--red);
     }
 
     &.error .inputLabelRoot,
@@ -47,7 +47,6 @@
 }
 .inputRoot {
     padding: rem(5px 7px 5px 7px);
-    border-radius: rem(10px);
     background-color: var(--white);
     border: rem(1px) solid transparent;
     transition: border-color 0.2s ease-out;
@@ -56,7 +55,7 @@
     height: rem(45px);
 
     &.inputFocused {
-        border: rem(1px) solid var(--dark-blue);
+        border: rem(1px) solid var(--light-blue);
     }
 
     &.multiline {
@@ -93,10 +92,19 @@
         margin: 0;
     }
 }
+
+.outlinedInput {
+    font-size: rem(18px);
+    color: var(--text-color-default);
+    font-family: var(--font-family-default);
+    border-radius: rem(8px);
+}
+
 .inputLabelRoot {
     margin-top: rem(5px);
-    color: var(--text-color-default);
+    border-radius: rem(8px);
     font-size: rem(18px);
+    color: var(--text-color-default);
     font-family: var(--font-family-default);
 }
 

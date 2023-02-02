@@ -1,7 +1,9 @@
 {
     "loginForm": {
+        "title": "This name will be display in the meeting",
         "username": {
             "label": "UserName"
-        }
+        },
+        "createMeeting": "Create meeting"
     }
 }

@@ -7,6 +7,7 @@
 
     --dark-blue: #251f47;
     --light-blue: #89a6fb;
+    --light-blue-09: #89a5fbe6;
 
     --red: #ff0000;
 
@@ -21,6 +22,8 @@
 
     --text-color-default: var(--black);
     --text-color-secondary: var(--dark-gray);
+
+    --button-shadow: #{rem(0px 8px 15px) rgba(0, 0, 0, 0.1)};
 
     --font-family-default: 'Roboto';
 

@@ -1,14 +1,10 @@
 import next from 'next';
 import express from 'express';
 import compression from 'compression';
-import i18nextMiddleware from 'next-i18next/middleware';
-import { applyServerHMR } from 'i18next-hmr/server';
 import { createProxyMiddleware, Options } from 'http-proxy-middleware';
 import { join } from 'path';
 import { parse } from 'url';
 import cookieParser from 'cookie-parser';
-
-import nextI18next from '../../i18n';
 
 const devApiUrl = process.env.DEV_API_URL || 'http://localhost:8000';
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
@@ -30,14 +26,9 @@ const app = next({
 
 const handle = app.getRequestHandler();
 
-if (process.env.NODE_ENV !== 'production') {
-    applyServerHMR(nextI18next.i18n);
-}
-
 app.prepare()
     .then(() => {
         const server = express();
-        server.use(i18nextMiddleware(nextI18next));
 
         server.use(cookieParser());
 
@@ -55,6 +46,7 @@ app.prepare()
         // Default catch-all handler to allow Next.js to handle all other routes
         server.all('*', (req, res) => {
             const parsedUrl = parse(req.url, true);
+
             const { pathname } = parsedUrl;
 
             if (pathname === '/service-worker.js' || pathname?.startsWith('/workbox-')) {

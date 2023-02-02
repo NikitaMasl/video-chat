@@ -1,0 +1,25 @@
+@import '../../../../app/styles/rem.scss';
+
+.container {
+    max-width: rem(400px);
+
+    .form {
+        width: 100%;
+    }
+
+    .title {
+        margin-bottom: rem(20px);
+    }
+
+    .userInput {
+        width: 100%;
+    }
+
+    .createBtn {
+        margin-top: rem(20px);
+    }
+
+    .errorText {
+        margin-top: rem(8px);
+    }
+}

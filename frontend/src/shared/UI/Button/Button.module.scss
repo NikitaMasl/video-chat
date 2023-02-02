@@ -1,0 +1,64 @@
+@import '../../../app/styles/rem.scss';
+
+.container {
+    height: rem(48px);
+    border-radius: rem(8px) !important;
+
+    .text {
+        text-transform: lowercase;
+        height: rem(20px);
+        white-space: nowrap;
+
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+}
+
+.containedInherit {
+    background: var(--light-blue);
+
+    &:hover {
+        background: var(--light-blue-09);
+        box-shadow: var(--button-shadow);
+    }
+
+    .text {
+        color: var(--white);
+    }
+}
+
+.textInherit {
+    background: transparent;
+    box-shadow: none;
+
+    &:hover {
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .text {
+        color: var(--blue);
+    }
+}
+
+.containerDisabled {
+    background: var(--dark-gray);
+
+    .text {
+        color: var(--black);
+        font-weight: 500;
+    }
+}
+
+.loader {
+    color: var(--white);
+}
+
+.outlined {
+    border: rem(1px) solid var(--light-blue);
+}
+
+.startIcon {
+    margin-right: 0;
+}
