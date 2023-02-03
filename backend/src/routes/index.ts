@@ -2,6 +2,7 @@ import { Router } from 'express';
 import httpStatus from 'http-status-codes';
 
 import userRouter from './user/router';
+import callRouter from './call/router';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.get('/', (req, res) => {
 });
 
 router.use('/user', userRouter);
+router.use('/call', callRouter);
 
 export default router;

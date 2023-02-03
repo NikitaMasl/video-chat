@@ -25,12 +25,13 @@ async function getSanitazedFields({ req, type }: Options): Promise<any> {
 
 export const withSanitizer = (): WrapMiddleware =>
     wrapAsyncMiddleware(async (req: IRequest, _, next) => {
-        console.log({ req });
         req.body = req.body || {};
         req.query = req.query || {};
 
         req.body = await getSanitazedFields({ req, type: Types.BODY });
         req.query = await getSanitazedFields({ req, type: Types.QUERY });
+
+        console.log('withSanitizer', { req });
 
         return next();
     });

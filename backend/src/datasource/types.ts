@@ -6,3 +6,11 @@ export interface IUser extends Document {
 
     toDto: (...args: unknown[]) => Promise<Record<string, unknown>>;
 }
+
+export interface ICall extends Document {
+    _id: Types.ObjectId;
+    owner: String;
+    callMembers?: { userId: String }[];
+
+    toDto: (...args: unknown[]) => Promise<Record<string, unknown>>;
+}

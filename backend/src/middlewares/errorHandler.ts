@@ -9,6 +9,7 @@ import { log } from '../common/logger';
 import CommonErrors from '../const/errors/common.errors';
 
 function processValidationErrors(err: ValidationError) {
+    console.log({ err });
     const errors = _.flatten(Object.values(err.details));
     const formattedErrors = errors.map((e) => {
         const {
@@ -32,6 +33,7 @@ function processValidationErrors(err: ValidationError) {
 }
 
 function processError(err: ValidationError | ApiError) {
+    console.log({ err });
     if (err instanceof ValidationError) {
         const { errors } = processValidationErrors(err);
         return {

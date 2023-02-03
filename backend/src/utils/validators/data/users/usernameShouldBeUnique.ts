@@ -7,7 +7,6 @@ type Options = {
 };
 
 export const usernameShouldBeUnique = async ({ username }: Options): Promise<IError | null> => {
-    console.log({ username });
     const user = await User.findOne({ username });
 
     return user ? UsersErrors.userAlreadyExists : null;

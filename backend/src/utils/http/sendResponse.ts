@@ -15,9 +15,6 @@ export const sendResponse = async function sendResponse(
         success: result,
         errors,
     };
-
-    console.log({ response });
-
     if (headers) res.header(headers);
 
     res.status(status).json(response);

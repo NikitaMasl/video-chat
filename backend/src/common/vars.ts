@@ -13,6 +13,13 @@ const vars = {
     mongo: {
         url: parseString(process.env.MONGO_URL, 'mongodb://localhost:27020/video-chat/?replicaSet=rs0'),
     },
+    cookieName: process.env.COOKIE_NAME || 'VideoChatAccessToken',
+    auth: {
+        jwtSecret: parseString(process.env.USERS_AUTH_JWTSECRET, '123456'),
+        cookieSecret: parseString(process.env.USERS_AUTH_COOKIESECRET, '123456'),
+        accessTokenMaxAgeInMs: 7 * 24 * 60 * 60 * 1000, // 7 days
+        domain: parseString(process.env.COOKIE_DOMAIN, 'localhost'),
+    },
 };
 
 export default vars;

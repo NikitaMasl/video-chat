@@ -1,11 +1,12 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Locales, Namespaces } from 'shared/const/i18n';
-import dynamic from 'next/dynamic';
+import { EntirePageLoader } from 'shared/UI/EntirePageLoader';
 
 const DynamicPageLogin = dynamic(() => import('../widgets/LoginComponentPage/LoginComponentPage'), {
-    loading: () => <>Loading...</>,
+    loading: () => <EntirePageLoader />,
 });
 
 const LoginPage = () => <DynamicPageLogin />;
