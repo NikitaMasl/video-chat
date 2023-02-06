@@ -1,1 +1,1 @@
-export { default as CallComponentPage } from './CallComponentPage';
+export { default as CallComponentPage } from './UI/CallComponentPage';

@@ -7,6 +7,7 @@ import { parse } from 'url';
 import cookieParser from 'cookie-parser';
 
 const devApiUrl = process.env.DEV_API_URL || 'http://localhost:8000';
+const devSocketUrl = process.env.DEV_SOCKET_CALL_URL || 'http://localhost:8001';
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 const env = process.env.NODE_ENV;
@@ -17,6 +18,12 @@ const devProxy: Record<string, Options> = {
         target: `${devApiUrl}/api/`,
         pathRewrite: { '^/api': '/' },
         changeOrigin: true,
+    },
+    '/socket.io/call': {
+        target: `${devSocketUrl}/socket.io`,
+        pathRewrite: { '^/call': '/' },
+        changeOrigin: true,
+        ws: true,
     },
 };
 

@@ -31,7 +31,5 @@ export const withSanitizer = (): WrapMiddleware =>
         req.body = await getSanitazedFields({ req, type: Types.BODY });
         req.query = await getSanitazedFields({ req, type: Types.QUERY });
 
-        console.log('withSanitizer', { req });
-
         return next();
     });

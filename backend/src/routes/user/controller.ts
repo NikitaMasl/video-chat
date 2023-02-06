@@ -20,8 +20,6 @@ const DEFAULT_TOKEN_OPTIONS = Object.freeze({
 const registerUser = wrapAsyncMiddleware(async (req: IRequest, res: Response) => {
     const { user } = await create({ data: req.body });
 
-    console.log({ user });
-
     const accessToken: string = generateAccessToken(user as unknown as IUser);
 
     res.cookie(vars.cookieName, accessToken, DEFAULT_TOKEN_OPTIONS);
@@ -29,6 +27,17 @@ const registerUser = wrapAsyncMiddleware(async (req: IRequest, res: Response) =>
     return sendResponse(res, HTTPStatus.OK, { result: { user } });
 });
 
+const getMe = wrapAsyncMiddleware(async (req: IRequest, res: Response) => {
+    const { user } = req.data as { user: IUser };
+
+    const result = {
+        user: await user.toDto({}),
+    };
+
+    return sendResponse(res, HTTPStatus.OK, { result });
+});
+
 export default {
     registerUser,
+    getMe,
 };

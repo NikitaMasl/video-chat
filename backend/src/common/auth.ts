@@ -24,8 +24,6 @@ export const initJwtStrategy = function (): void {
                     _id: jwtPayload.id,
                 });
 
-                console.log({ user });
-
                 if (user) {
                     done(null, user as IUser);
                 } else {
@@ -40,8 +38,6 @@ export const initJwtStrategy = function (): void {
 
 export function authMiddleware(req: IRequest, res: Response, next: NextFunction): void {
     const authCallback = (err: Error, user: IUser) => {
-        console.log({ user });
-
         try {
             if (err || !user) {
                 return next(new UnauthorizedError());
