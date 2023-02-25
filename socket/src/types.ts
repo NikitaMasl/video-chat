@@ -7,4 +7,5 @@ export interface IUser {
 
 export interface EnhancedSocket extends Socket {
     user?: IUser | null;
+    callId?: string;
 }

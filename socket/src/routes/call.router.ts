@@ -5,5 +5,8 @@ import controller from './call.controller';
 const router = new SocketRouter('call:');
 
 router.addRoute(CallEvents.JOIN, controller.joinHandler);
+router.addRoute(CallEvents.RELAY_ICE, controller.relayIceHandler);
+router.addRoute(CallEvents.RELAY_SDP, controller.relaySdpHandler);
+router.addRoute(CallEvents.LEAVE, controller.leaveHandler);
 
 export default router;

@@ -1,4 +1,5 @@
 import { Server, Client } from 'socket.io';
+import { CallEvents } from '../../const/events/call.events';
 import { EnhancedSocket } from '../../types';
 import SocketRouter from './SocketRouter';
 
@@ -57,6 +58,9 @@ export default class SocketTransport {
     }
 
     onDisconnect = () => {
+        if (this.socket.callId) {
+            this.io.to(this.socket.callId).emit(`call:${CallEvents.REMOVE_PEER}`, { peerId: this.socket?.user?.id });
+        }
         this.socket.disconnect();
     };
 }

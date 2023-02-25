@@ -26,13 +26,13 @@ export default class SocketRouter {
         this.routes.map(([route, handlers]: any) => {
             const event = `${this.basePath}${route}`;
             socketTransport.addRoute(event, (data: unknown, cb: any) => {
-                if (!_.get('options', 'withoutLog', false)) {
-                    log({
-                        level: 'info',
-                        message: `Receive '${event}' from userId: '${socketTransport.getUserId()}'`,
-                        data,
-                    });
-                }
+                // if (!_.get('options', 'withoutLog', false) && !event.includes('relay-ice')) {
+                //     log({
+                //         level: 'info',
+                //         message: `Receive '${event}' from userId: '${socketTransport.getUserId()}'`,
+                //         data,
+                //     });
+                // }
 
                 this.runHandlers({
                     handlers,

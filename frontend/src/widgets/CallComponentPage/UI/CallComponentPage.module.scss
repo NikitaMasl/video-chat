@@ -1,0 +1,52 @@
+@import '../../../app/styles/rem.scss';
+
+.secondaryVideosContainer {
+    width: auto !important;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.7);
+    top: rem(20px);
+    right: rem(20px);
+    border-radius: rem(14px);
+    padding: rem(10px);
+    gap: rem(10px);
+
+    &:hover {
+        cursor: grab;
+    }
+
+    .secondaryVideo {
+        max-width: rem(240px);
+        height: 100%;
+    }
+
+    .secondaryVideoWrapper {
+        max-height: rem(140px);
+        border-radius: rem(14px);
+        overflow: hidden;
+        border: rem(1px) solid var(--white);
+        transition: border 200ms ease-in-out;
+    }
+
+    .clicable {
+        &:hover {
+            cursor: pointer;
+            border-color: var(--light-blue-09);
+        }
+    }
+}
+
+.mainVideoWrapper {
+    max-height: 80%;
+    max-width: 100vw;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .mainVideo {
+        height: 80%;
+        max-width: 100%;
+        border-radius: rem(14px);
+        width: fit-content;
+    }
+}
