@@ -4,6 +4,7 @@
         "username": {
             "label": "UserName"
         },
-        "createMeeting": "Create meeting"
+        "createMeeting": "Create meeting",
+        "joinMeeting": "Join meeting"
     }
 }

@@ -97,8 +97,10 @@ const CallComponentPage = (props: Props) => {
                     </Grid>
                 </Draggable>
                 {mainVideoStream && (
-                    <div className={styles.mainVideoWrapper}>
-                        <Video className={styles.mainVideo} stream={mainVideoStream} />
+                    <div className={styles.mainVideoContainer}>
+                        <div className={styles.mainVideoWrapper}>
+                            <Video className={styles.mainVideo} stream={mainVideoStream} />
+                        </div>
                     </div>
                 )}
             </>

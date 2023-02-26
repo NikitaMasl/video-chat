@@ -15,11 +15,17 @@ import { TypeButton } from 'shared/UI/Button/const';
 
 import styles from './LoginForm.module.scss';
 
+type Props = {
+    isJoin?: boolean;
+};
+
 const schema = Joi.object({
     username: Joi.string().trim().min(2).max(28).required(),
 });
 
-const LoginForm = () => {
+const LoginForm = (props: Props) => {
+    const { isJoin = false } = props;
+
     const {
         actions: { registerUserRequest },
         state: { errorMessage },
@@ -69,17 +75,17 @@ const LoginForm = () => {
                     </Text>
                 )}
                 <Button type={TypeButton.SUBMIT} className={styles.createBtn}>
-                    {t('loginForm.createMeeting')}
+                    {isJoin ? t('loginForm.joinMeeting') : t('loginForm.createMeeting')}
                 </Button>
             </Form>
         </Grid>
     );
 };
 
-const PrefetchWrapper = () => {
+const PrefetchWrapper = (props: Props) => {
     return (
         <LoginFormContextProvider>
-            <LoginForm />
+            <LoginForm {...props} />
         </LoginFormContextProvider>
     );
 };

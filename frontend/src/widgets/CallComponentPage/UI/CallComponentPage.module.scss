@@ -35,18 +35,22 @@
     }
 }
 
-.mainVideoWrapper {
-    max-height: 80%;
-    max-width: 100vw;
-    width: 100%;
+.mainVideoContainer {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    .mainVideo {
-        height: 80%;
-        max-width: 100%;
+    .mainVideoWrapper {
+        max-height: 80%;
+        max-width: 80%;
+        width: 100%;
+        overflow-y: hidden;
         border-radius: rem(14px);
-        width: fit-content;
+
+        .mainVideo {
+            width: 100%;
+            height: 100%;
+        }
     }
 }

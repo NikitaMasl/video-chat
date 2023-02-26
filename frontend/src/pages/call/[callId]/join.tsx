@@ -1,19 +1,15 @@
+import React from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { EntirePageLoader } from 'shared/UI/EntirePageLoader';
 import { Locales, Namespaces } from 'shared/const/i18n';
 
-const DynamicPageLogin = dynamic(() => import('../../../widgets/CallComponentPage/UI/CallComponentPage'), {
+const DynamicPageJoin = dynamic(() => import('../../../widgets/LoginComponentPage/LoginComponentPage'), {
     loading: () => <EntirePageLoader />,
 });
 
-const CallItemPage = () => {
-    const router = useRouter();
-
-    return <DynamicPageLogin callId={router.query.callId as string} />;
-};
+const JoinPage = () => <DynamicPageJoin />;
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     return {
@@ -23,4 +19,4 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
     };
 };
 
-export default CallItemPage;
+export default JoinPage;

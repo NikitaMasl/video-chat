@@ -2,7 +2,7 @@ import React from 'react';
 import { LoginForm } from 'entities/user/UI/LoginForm';
 import MainContainer from 'widgets/containers/MainContainer/MainContainer';
 
-const LoginComponentPage = () => {
+const JoinComponentPage = () => {
     return (
         <MainContainer>
             <LoginForm isJoin />
@@ -10,4 +10,4 @@ const LoginComponentPage = () => {
     );
 };
 
-export default React.memo(LoginComponentPage);
+export default React.memo(JoinComponentPage);

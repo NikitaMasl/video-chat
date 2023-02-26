@@ -69,8 +69,11 @@ MyDocument.getInitialProps = async (ctx) => {
 
     const initialProps = await Document.getInitialProps(ctx);
 
+    console.log({ initialProps });
+
     return {
         ...initialProps,
+        namespacesRequired: ['common'],
         // Styles fragment is rendered after the app and page rendering finish.
         styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
     };
