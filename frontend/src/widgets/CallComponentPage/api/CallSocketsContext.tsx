@@ -1,5 +1,5 @@
-import { publicConfig } from 'app/publicConfig';
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { publicConfig } from 'app/publicConfig';
 import io, { Socket } from 'socket.io-client';
 
 export interface EventToSend {
@@ -40,6 +40,7 @@ const CallSocketsContext = React.createContext<ContextValue>({} as ContextValue)
 
 const CallSocketsContextProvider = (props: Props) => {
     const { children } = props;
+
     const socketRef = useRef<SocketIOClient.Socket | null>(null);
     const connectingRef = useRef(false);
     const eventListenersRef = useRef<EventListeners>({});

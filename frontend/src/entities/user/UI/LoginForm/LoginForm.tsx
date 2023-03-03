@@ -47,7 +47,7 @@ const LoginForm = (props: Props) => {
     };
 
     const onSubmitHandler = onSubmitForm((data) => {
-        registerUserRequest(data);
+        registerUserRequest(data, isJoin);
     });
 
     return (
@@ -83,8 +83,10 @@ const LoginForm = (props: Props) => {
 };
 
 const PrefetchWrapper = (props: Props) => {
+    const { isJoin } = props;
+
     return (
-        <LoginFormContextProvider>
+        <LoginFormContextProvider isJoin={isJoin}>
             <LoginForm {...props} />
         </LoginFormContextProvider>
     );

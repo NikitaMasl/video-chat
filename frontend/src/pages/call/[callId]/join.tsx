@@ -5,7 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { EntirePageLoader } from 'shared/UI/EntirePageLoader';
 import { Locales, Namespaces } from 'shared/const/i18n';
 
-const DynamicPageJoin = dynamic(() => import('../../../widgets/LoginComponentPage/LoginComponentPage'), {
+const DynamicPageJoin = dynamic(() => import('../../../widgets/JoinComponentPage/JoinComponentPage'), {
     loading: () => <EntirePageLoader />,
 });
 

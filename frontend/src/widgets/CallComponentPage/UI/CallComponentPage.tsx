@@ -12,6 +12,7 @@ import { CallContext, CallContextProvider } from '../api/CallContext';
 import { CallSocketsContext, CallSocketsContextProvider } from '../api/CallSocketsContext';
 
 import styles from './CallComponentPage.module.scss';
+import { CallActionsContextProvider } from '../api/CallActionsContext';
 
 type Props = {
     callId: string;
@@ -114,7 +115,9 @@ const PrefetchWrapper = (props: Props) => {
     return (
         <CallSocketsContextProvider>
             <CallContextProvider callId={callId}>
-                <CallComponentPage callId={callId} />
+                <CallActionsContextProvider callId={callId}>
+                    <CallComponentPage callId={callId} />
+                </CallActionsContextProvider>
             </CallContextProvider>
         </CallSocketsContextProvider>
     );

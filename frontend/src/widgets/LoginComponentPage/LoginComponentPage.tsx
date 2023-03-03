@@ -5,7 +5,7 @@ import MainContainer from 'widgets/containers/MainContainer/MainContainer';
 const LoginComponentPage = () => {
     return (
         <MainContainer>
-            <LoginForm isJoin />
+            <LoginForm />
         </MainContainer>
     );
 };
