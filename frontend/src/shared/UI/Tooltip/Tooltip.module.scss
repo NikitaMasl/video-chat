@@ -1,0 +1,24 @@
+@import '../../../app/styles/rem.scss';
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tooltip {
+    font-family: var(--font-family-default) !important;
+    font-size: var(--text-size-s5) !important;
+    font-weight: 400;
+    background-color: var(--black-07) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: rem(8px) !important;
+    padding: rem(2px 8px 2px 8px);
+}
+
+.arrow {
+    position: absolute !important;
+    top: rem(7px) !important;
+    right: calc(50% - rem(4px)) !important;
+    color: var(--black-07) !important;
+}

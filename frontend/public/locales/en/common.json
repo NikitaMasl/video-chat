@@ -6,5 +6,8 @@
         },
         "createMeeting": "Create meeting",
         "joinMeeting": "Join meeting"
+    },
+    "tooltips": {
+        "linkCopy": "Copy invitaion link"
     }
 }

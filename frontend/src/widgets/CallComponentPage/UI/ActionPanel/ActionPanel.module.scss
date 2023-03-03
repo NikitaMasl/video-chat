@@ -1,0 +1,30 @@
+@import '../../../../app/styles/rem.scss';
+
+.container {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding-bottom: rem(10px);
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--black-01);
+        transition: background 200ms ease-in-out;
+
+        .linkIcon {
+            width: rem(34px);
+            height: rem(34px);
+            color: var(--black);
+            transition: color 200ms ease-in-out;
+        }
+
+        &:hover {
+            background: var(--black-07);
+            .linkIcon {
+                color: var(--white);
+            }
+        }
+    }
+}

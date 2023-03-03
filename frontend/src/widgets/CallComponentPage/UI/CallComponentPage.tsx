@@ -13,6 +13,7 @@ import { CallSocketsContext, CallSocketsContextProvider } from '../api/CallSocke
 
 import styles from './CallComponentPage.module.scss';
 import { CallActionsContextProvider } from '../api/CallActionsContext';
+import { ActionPanel } from './ActionPanel';
 
 type Props = {
     callId: string;
@@ -104,6 +105,7 @@ const CallComponentPage = (props: Props) => {
                         </div>
                     </div>
                 )}
+                <ActionPanel />
             </>
         </MainContainer>
     );

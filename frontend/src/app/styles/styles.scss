@@ -23,6 +23,9 @@
     --text-color-default: var(--black);
     --text-color-secondary: var(--dark-gray);
 
+    --black-01: rgba(0, 0, 0, 0.1);
+    --black-07: rgba(0, 0, 0, 0.7);
+
     --button-shadow: #{rem(0px 8px 15px) rgba(0, 0, 0, 0.1)};
 
     --font-family-default: 'Roboto';
