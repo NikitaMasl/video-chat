@@ -10,10 +10,10 @@ import { Grid } from 'shared/UI/Grid';
 import MainContainer from 'widgets/containers/MainContainer/MainContainer';
 import { CallContext, CallContextProvider } from '../api/CallContext';
 import { CallSocketsContext, CallSocketsContextProvider } from '../api/CallSocketsContext';
+import { CallActionsContext, CallActionsContextProvider } from '../api/CallActionsContext';
+import { ActionPanel } from './ActionPanel';
 
 import styles from './CallComponentPage.module.scss';
-import { CallActionsContextProvider } from '../api/CallActionsContext';
-import { ActionPanel } from './ActionPanel';
 
 type Props = {
     callId: string;
@@ -30,8 +30,11 @@ const CallComponentPage = (props: Props) => {
     } = useContext(CallSocketsContext);
 
     const {
-        state: { myPeerId },
-        localMediaStream,
+        state: { isCamMuted, isMicMuted },
+    } = useContext(CallActionsContext);
+
+    const {
+        state: { localMediaStream },
         clients,
     } = useContext(CallContext);
 
@@ -61,13 +64,13 @@ const CallComponentPage = (props: Props) => {
         if (getCallData && !isConnected) {
             connect();
         }
-    }, [getCallData, isConnected]);
+    }, [getCallData, isConnected, connect]);
 
     useEffect(() => {
         if (!mainVideoId && clientsArr.length) {
             setMainVideoHandler(clientsArr[0].id);
         }
-    }, [mainVideoId, clientsArr]);
+    }, [mainVideoId, clientsArr, setMainVideoHandler]);
 
     if (!isConnected) {
         return <EntirePageLoader />;
@@ -85,7 +88,13 @@ const CallComponentPage = (props: Props) => {
                         className={styles.secondaryVideosContainer}
                     >
                         <div className={styles.secondaryVideoWrapper}>
-                            <Video className={styles.secondaryVideo} stream={localMediaStream} muted />
+                            <Video
+                                className={styles.secondaryVideo}
+                                showPlug={isCamMuted}
+                                stream={localMediaStream}
+                                isMicMuted={isMicMuted}
+                                muted
+                            />
                         </div>
                         {clientsArr.map((client) => (
                             <div
@@ -93,7 +102,12 @@ const CallComponentPage = (props: Props) => {
                                 className={cnb(styles.secondaryVideoWrapper, styles.clicable)}
                                 onClick={() => setMainVideoHandler(client.id)}
                             >
-                                <Video className={styles.secondaryVideo} stream={client.stream} />
+                                <Video
+                                    key={client.id}
+                                    className={styles.secondaryVideo}
+                                    stream={client.stream}
+                                    isMicMuted={client.isMicMuted}
+                                />
                             </div>
                         ))}
                     </Grid>
@@ -101,7 +115,12 @@ const CallComponentPage = (props: Props) => {
                 {mainVideoStream && (
                     <div className={styles.mainVideoContainer}>
                         <div className={styles.mainVideoWrapper}>
-                            <Video className={styles.mainVideo} stream={mainVideoStream} />
+                            <Video
+                                key={mainVideoId}
+                                className={styles.mainVideo}
+                                stream={mainVideoStream}
+                                isMicMuted={clients.get(mainVideoId)?.isMicMuted}
+                            />
                         </div>
                     </div>
                 )}

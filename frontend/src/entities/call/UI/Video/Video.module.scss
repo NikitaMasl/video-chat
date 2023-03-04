@@ -1,0 +1,47 @@
+@import '../../../../app/styles/rem.scss';
+
+.videoPreview {
+    z-index: 10;
+    position: relative;
+}
+
+.frozenPlug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    background: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .mutedCanIcon {
+        width: rem(32px);
+        height: rem(32px);
+        color: var(--white);
+    }
+}
+
+.showPlug {
+    z-index: 11;
+}
+
+.mutedMicWrapper {
+    z-index: 12;
+    padding: rem(10px);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: rem(10px);
+    right: rem(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .mutedMic {
+        color: var(--white);
+        width: rem(24px);
+        height: rem(24px);
+    }
+}

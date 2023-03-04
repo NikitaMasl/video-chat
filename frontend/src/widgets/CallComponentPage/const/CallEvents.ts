@@ -8,6 +8,7 @@ export enum CallEvents {
     RELAY_ICE = 'call:relay-ice',
     ICE_CANDIDATE = 'call:ice-candidate',
     SESSION_DESCRIPTION = 'call:session-description',
+    MUTE_UNMUTE = 'call:mute-unmute',
 }
 
 export const CALL_EVENTS_ARRAY = Object.values(CallEvents);

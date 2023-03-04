@@ -1,21 +1,40 @@
-import React, { forwardRef, useEffect, useRef } from 'react';
+import { cnb } from 'cnbuilder';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import MutedCam from 'shared/icons/MutedCam';
+import MutedMic from 'shared/icons/MutedMic';
 import { emptyFunc } from 'shared/lib/utils/emptyFunc';
+
+import styles from './Video.module.scss';
 
 interface IProps {
     src?: string;
     volume?: number;
     stream?: MediaStream | null;
     muted?: boolean;
+    showPlug?: boolean;
     className?: string;
-    onPlayError?: (videoEl: HTMLVideoElement, e: Error) => void;
+    isMicMuted?: boolean;
+    onPlayError?: (videoEl: HTMLMediaElement, e: Error) => void;
 }
 
-const Video = forwardRef<HTMLVideoElement, IProps>((props, ref) => {
-    const { src, stream, className = '', muted = false, volume, onPlayError = emptyFunc } = props;
+const Video = forwardRef<HTMLMediaElement, IProps>((props, ref) => {
+    const {
+        src,
+        stream,
+        isMicMuted = false,
+        showPlug = false,
+        className = '',
+        muted = false,
+        volume,
+        onPlayError = emptyFunc,
+    } = props;
 
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const [isVideoMuted, setIsVideoMuted] = useState<boolean>(false);
+    const [isAudioMuted, setIsAudioMuted] = useState<boolean>(false);
 
-    const handleRef = (r: HTMLVideoElement | null) => {
+    const videoRef = useRef<HTMLMediaElement>(null);
+
+    const handleRef = (r: HTMLMediaElement | null) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         videoRef.current = r;
@@ -33,11 +52,58 @@ const Video = forwardRef<HTMLVideoElement, IProps>((props, ref) => {
             videoRef.current.play().catch((e) => {
                 if (e.name !== 'AbortError') {
                     console.log('Error; Video.play;', e);
-                    onPlayError(videoRef.current as HTMLVideoElement, e);
+                    onPlayError(videoRef.current as HTMLMediaElement, e);
                 }
             });
+            videoRef.current.onchange = (e) => {
+                console.log({ e });
+            };
         }
-    }, [stream]);
+    }, [stream, onPlayError]);
+
+    useEffect(() => {
+        if (stream) {
+            stream.onremovetrack = (e) => {
+                console.log({ e });
+            };
+            stream.onaddtrack = (e) => {
+                console.log({ e });
+            };
+
+            stream.getAudioTracks().forEach((audioTrack) => {
+                audioTrack.onended = () => {
+                    setIsAudioMuted(true);
+                };
+                audioTrack.onmute = () => {
+                    setIsVideoMuted(true);
+                };
+                audioTrack.onunmute = () => {
+                    setIsVideoMuted(false);
+                };
+            });
+
+            stream.getVideoTracks().forEach((videoTrack) => {
+                setIsVideoMuted(videoTrack.muted);
+
+                videoTrack.onmute = () => {
+                    if (videoRef.current) {
+                        setIsVideoMuted(true);
+                    }
+                };
+                videoTrack.onunmute = () => {
+                    if (videoRef.current) {
+                        setIsVideoMuted(false);
+                        videoRef.current.play().catch((e) => {
+                            if (e.name !== 'AbortError') {
+                                console.log('Error; Video.play;', e);
+                                onPlayError(videoRef.current as HTMLMediaElement, e);
+                            }
+                        });
+                    }
+                };
+            });
+        }
+    }, [stream, onPlayError]);
 
     useEffect(() => {
         if (videoRef.current && (volume || volume === 0)) {
@@ -47,15 +113,31 @@ const Video = forwardRef<HTMLVideoElement, IProps>((props, ref) => {
 
     return (
         // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video
-            autoPlay
-            playsInline
-            style={{ pointerEvents: 'none' }}
-            ref={handleRef}
-            className={className}
-            muted={muted}
-            src={src}
-        />
+        <>
+            <video
+                autoPlay
+                playsInline
+                style={{ pointerEvents: 'none' }}
+                ref={handleRef}
+                className={cnb(className, styles.videoPreview)}
+                muted={muted}
+                src={src}
+            />
+            {Boolean(isVideoMuted || showPlug || !stream) && (
+                <div
+                    className={cnb(className, styles.frozenPlug, {
+                        [styles.showPlug]: showPlug,
+                    })}
+                >
+                    <MutedCam className={styles.mutedCanIcon} />
+                </div>
+            )}
+            {(isAudioMuted || isMicMuted) && (
+                <div className={styles.mutedMicWrapper}>
+                    <MutedMic className={styles.mutedMic} />
+                </div>
+            )}
+        </>
     );
 });
 

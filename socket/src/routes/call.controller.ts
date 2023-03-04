@@ -15,6 +15,8 @@ const joinHandler = async (socketTransport: SocketTransport, data: { callId: str
         socket.join(`call_${callId}__user_${socket?.user?.id}`);
     }
 
+    socket.join(callId);
+
     io.to(callId).emit(`${BASE_PATH}${CallEvents.ADD_PEER}`, {
         peerId: socket?.user?.id,
         createOffer: false,
@@ -30,8 +32,6 @@ const joinHandler = async (socketTransport: SocketTransport, data: { callId: str
             });
         }
     });
-
-    socket.join(callId);
 
     responseCallback(
         {
@@ -82,9 +82,19 @@ const leaveHandler = (socketTransport: SocketTransport) => {
     socket.leaveAll();
 };
 
+const muteUnmuteHandler = (socketTransport: SocketTransport, data: { isMicMuted: boolean }) => {
+    const { io, socket } = socketTransport;
+    const { isMicMuted } = data;
+
+    if (socket.callId) {
+        io.to(socket.callId).emit(`${BASE_PATH}${CallEvents.MUTE_UNMUTE}`, { peerId: socket?.user?.id, isMicMuted });
+    }
+};
+
 export default {
     joinHandler,
     relayIceHandler,
     relaySdpHandler,
     leaveHandler,
+    muteUnmuteHandler,
 };

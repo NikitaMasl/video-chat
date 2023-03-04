@@ -6,6 +6,7 @@ import { CallSocketsContext } from './CallSocketsContext';
 interface IState {
     callId: string;
     myPeerId?: string;
+    localMediaStream: MediaStream | null;
 }
 
 type Props = {
@@ -16,15 +17,20 @@ type Props = {
 interface IMember {
     id: string;
     stream: MediaStream | null;
+    isMicMuted?: boolean;
 }
 
 interface ContextValue {
     actions: {
-        [key: string]: (...args: unknown[]) => unknown;
+        startLocalStream: ({ audio, video }: { audio?: boolean; video?: boolean }) => Promise<MediaStream>;
+        startVideoTracks: () => Promise<MediaStreamTrack[]>;
+        startAudioTracks: () => Promise<MediaStreamTrack[]>;
+        getOwnPeer: () => RTCPeerConnection | undefined;
     };
     state: IState;
-    localMediaStream: MediaStream | null;
+    peers: Map<string, RTCPeerConnection>;
     clients: Map<string, IMember>;
+    localMediaStream: MediaStream | null;
 }
 
 const CallContext = React.createContext<ContextValue>({} as ContextValue);
@@ -44,7 +50,7 @@ const CallContextProvider = (props: Props) => {
                 ...action,
             };
         },
-        { callId },
+        { callId, localMediaStream: null },
     );
 
     const [clients, setClients] = useState<Map<string, IMember>>(new Map());
@@ -56,16 +62,71 @@ const CallContextProvider = (props: Props) => {
     const addMemberQueueRef = useRef(new AsyncQueue({ maxParallelTasks: 1 }));
     const { current: addMemberQueue } = addMemberQueueRef;
 
-    const start = useCallback(async () => {
-        const localStream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: {
-                width: 1280,
-                height: 720,
-            },
+    const startVideoTracks = useCallback(async () => {
+        localMediaStream.current?.getVideoTracks().forEach((t) => {
+            t.stop();
+            localMediaStream.current?.removeTrack(t);
         });
 
-        localMediaStream.current = localStream;
+        const localStream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: { width: 1280, height: 720 },
+        });
+
+        const videoTracks = localStream.getVideoTracks();
+
+        videoTracks.forEach((t) => {
+            localMediaStream.current?.addTrack(t);
+        });
+
+        setState({ localMediaStream: localMediaStream.current });
+
+        return videoTracks;
+    }, []);
+
+    const startAudioTracks = useCallback(async () => {
+        localMediaStream.current?.getAudioTracks().forEach((t) => {
+            t.stop();
+            localMediaStream.current?.removeTrack(t);
+        });
+
+        const localStream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false,
+        });
+
+        const audioTracks = localStream.getAudioTracks();
+
+        audioTracks.forEach((t) => {
+            localMediaStream.current?.addTrack(t);
+        });
+
+        setState({ localMediaStream: localMediaStream.current });
+
+        return audioTracks;
+    }, []);
+
+    const startLocalStream = useCallback(
+        async ({ audio = true, video = true }: { audio?: boolean; video?: boolean }) => {
+            localMediaStream.current?.getTracks().forEach((t) => {
+                t.stop();
+            });
+
+            const localStream = await navigator.mediaDevices.getUserMedia({
+                audio,
+                video: video && { width: 1280, height: 720 },
+            });
+
+            localMediaStream.current = localStream;
+            setState({ localMediaStream: localStream });
+
+            return localStream;
+        },
+        [],
+    );
+
+    const start = useCallback(async () => {
+        await startLocalStream({});
 
         const res = await emit(CallEvents.JOIN, { callId });
 
@@ -73,11 +134,11 @@ const CallContextProvider = (props: Props) => {
             myPeerId.current = res.peerId;
             setState({ myPeerId: res.peerId });
         }
-    }, [callId, emit]);
+    }, [callId, startLocalStream, emit]);
 
     const addNewPeer = useCallback(
         async ({ peerId, createOffer }: { peerId: string; createOffer: boolean }) => {
-            if (peers.current.has(peerId) || myPeerId.current === peerId) {
+            if (peers.current.has(peerId)) {
                 return console.log(`Already connected to peer ${peerId}`);
             }
 
@@ -108,8 +169,19 @@ const CallContextProvider = (props: Props) => {
 
             let tracksNumber = 0;
 
-            peerConnection.ontrack = ({ streams: [remoteStream] }) => {
+            peerConnection.ontrack = (event) => {
+                const {
+                    streams: [remoteStream],
+                } = event;
+
+                setClients((p) => {
+                    const newState = new Map(p);
+                    newState.set(peerId, { id: peerId, stream: null });
+                    return newState;
+                });
+
                 tracksNumber++;
+
                 if (tracksNumber === 2) {
                     // video & audio tracks received
                     tracksNumber = 0;
@@ -180,10 +252,6 @@ const CallContextProvider = (props: Props) => {
             peerId: string;
             sessionDescription: RTCSessionDescriptionInit;
         }) => {
-            if (myPeerId.current === peerId) {
-                return;
-            }
-
             const peer = peers.current.get(peerId);
 
             if (!peer) {
@@ -206,6 +274,23 @@ const CallContextProvider = (props: Props) => {
         [emit],
     );
 
+    const handleMuteUnmute = useCallback(({ peerId, isMicMuted }: { peerId: string; isMicMuted: boolean }) => {
+        setClients((p) => {
+            const newState = new Map(p);
+
+            const peer = p.get(peerId);
+
+            if (peer) {
+                newState.set(peerId, {
+                    ...peer,
+                    isMicMuted,
+                });
+            }
+
+            return newState;
+        });
+    }, []);
+
     const handleRemovePeer = useCallback(({ peerId }: { peerId: string }) => {
         const peer = peers.current.get(peerId);
 
@@ -224,6 +309,10 @@ const CallContextProvider = (props: Props) => {
         });
     }, []);
 
+    const getOwnPeer = useCallback(() => {
+        if (myPeerId.current) return peers.current.get(myPeerId.current);
+    }, []);
+
     useEffect(() => {
         if (isConnected) {
             start();
@@ -232,6 +321,7 @@ const CallContextProvider = (props: Props) => {
             subscribe(CallEvents.ICE_CANDIDATE, handleIceCandidate);
             subscribe(CallEvents.SESSION_DESCRIPTION, handleSessionDescription);
             subscribe(CallEvents.REMOVE_PEER, handleRemovePeer);
+            subscribe(CallEvents.MUTE_UNMUTE, handleMuteUnmute);
         }
     }, [
         isConnected,
@@ -258,7 +348,12 @@ const CallContextProvider = (props: Props) => {
         [],
     );
 
-    const actions = {};
+    const actions = {
+        getOwnPeer,
+        startLocalStream,
+        startVideoTracks,
+        startAudioTracks,
+    };
 
     return (
         <CallContext.Provider
@@ -266,6 +361,7 @@ const CallContextProvider = (props: Props) => {
                 actions,
                 state,
                 clients,
+                peers: peers.current,
                 localMediaStream: localMediaStream.current,
             }}
         >

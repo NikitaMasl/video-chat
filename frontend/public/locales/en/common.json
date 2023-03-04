@@ -8,6 +8,10 @@
         "joinMeeting": "Join meeting"
     },
     "tooltips": {
-        "linkCopy": "Copy invitaion link"
+        "linkCopy": "Copy invitaion link",
+        "muteMic": "Turn off microphone",
+        "unMuteMic": "Turn on microphone",
+        "muteCam": "Turn off camera",
+        "unMuteCam": "Turn on camera"
     }
 }

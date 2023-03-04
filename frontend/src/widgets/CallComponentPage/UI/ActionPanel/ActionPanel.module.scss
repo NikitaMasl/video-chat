@@ -5,6 +5,7 @@
     position: fixed;
     bottom: 0;
     padding-bottom: rem(10px);
+    gap: rem(10px);
 
     .btn {
         display: flex;
@@ -13,7 +14,7 @@
         background: var(--black-01);
         transition: background 200ms ease-in-out;
 
-        .linkIcon {
+        .icon {
             width: rem(34px);
             height: rem(34px);
             color: var(--black);
@@ -22,7 +23,7 @@
 
         &:hover {
             background: var(--black-07);
-            .linkIcon {
+            .icon {
                 color: var(--white);
             }
         }
