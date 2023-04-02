@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ReactElement } from 'react';
-import { ServerStyleSheets } from '@material-ui/core/styles';
+import { ServerStyleSheets } from '@mui/styles';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { muiTheme } from 'shared/const/MuiTheme';
 

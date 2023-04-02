@@ -5,6 +5,7 @@ import passport from 'passport';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
+// import { RedisClient } from 'shared/';
 import vars from './common/vars';
 import { log } from './common/logger';
 import routes from './routes';
@@ -40,6 +41,8 @@ export async function run(): Promise<void> {
             credentials: true,
         }),
     );
+
+    // const redis = new RedisClient();
 
     app.use('/api', routes);
 

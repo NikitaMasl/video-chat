@@ -21,3 +21,11 @@ services:
       - RABBITMQ_DEFAULT_USER=editor
       - RABBITMQ_DEFAULT_PASS=Qwerty12345!
       - RABBIT_HOST=rabbit:5672
+
+  redis:
+    image: redis:alpine
+    restart: always
+    command: redis-server --requirepass Qwerty12345!
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    ports:
+      - 6379:6379

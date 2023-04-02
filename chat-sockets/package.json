@@ -1,0 +1,37 @@
+{
+    "name": "chat-socket",
+    "version": "0.0.1",
+    "main": "index.js",
+    "author": "Nikita Maslov (nikitamas1998@gmail.com)",
+    "scripts": {
+        "build": "tsc --project tsconfig.server.json",
+        "start": "node dist/index.js",
+        "dev": "nodemon ./src/index.ts",
+        "lint": "eslint ./src/ --ignore-pattern internals/scripts",
+        "lint:fix": "eslint ./src/ --ignore-pattern internals/scripts --fix"
+    },
+    "dependencies": {
+        "@hapi/joi": "17.1.1",
+        "amqplib": "0.5.5",
+        "dotenv": "10.0.0",
+        "joi": "17.7.0",
+        "lodash": "4.17.15",
+        "socket.io": "2.3.0",
+        "superagent": "6.1.0",
+        "winston": "3.2.1",
+        "winston-transport": "4.4.0"
+    },
+    "devDependencies": {
+        "@types/amqplib": "0.5.17",
+        "@types/lodash": "4.14.158",
+        "@types/node": "14.14.22",
+        "@types/socket.io": "2.1.10",
+        "@types/superagent": "4.1.10",
+        "eslint": "6.8.0",
+        "eslint-config-airbnb-base": "14.1.0",
+        "eslint-plugin-import": "2.20.1",
+        "nodemon": "2.0.3",
+        "ts-node": "8.10.2",
+        "typescript": "3.9.7"
+    }
+}
