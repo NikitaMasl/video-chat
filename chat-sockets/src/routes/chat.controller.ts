@@ -29,8 +29,6 @@ const sendMessage = async (socketTransport: SocketTransport, data: { callId: str
     const { callId } = data;
     const { socket, io } = socketTransport;
 
-    console.log({ callId });
-
     responseCallback(
         {
             peerId: socket?.user?.id,

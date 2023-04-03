@@ -1,14 +1,21 @@
 import dotenv from 'dotenv';
+import { parseString, parseNumber } from 'shared/utils/parsers';
 
 dotenv.config();
 
 export default {
-    env: process.env.NODE_ENV || 'local',
-    port: process.env.PORT || 3003,
+    env: parseString(process.env.NODE_ENV, 'local'),
+    port: parseNumber(process.env.PORT, 3003),
     rabbit: {
-        user: process.env.RABBIT_USER,
-        pass: process.env.RABBIT_PASS,
-        host: process.env.RABBIT_HOST,
+        user: parseString(process.env.RABBIT_USER, ''),
+        pass: parseString(process.env.RABBIT_PASS, ''),
+        host: parseString(process.env.RABBIT_HOST, ''),
     },
-    backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+    redis: {
+        port: parseNumber(process.env.REDIS_PORT, 16379),
+        host: parseString(process.env.REDIS_HOST, 'localhost'),
+        username: parseString(process.env.REDIS_USERNAME, 'redis'),
+        password: parseString(process.env.REDIS_PASSWORD, 'Qwerty12345!'),
+    },
+    backendUrl: parseString(process.env.BACKEND_URL, 'http://localhost:8000'),
 };

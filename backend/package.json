@@ -37,7 +37,8 @@
         "path": "0.12.7",
         "superagent": "8.0.8",
         "uuid": "9.0.0",
-        "winston": "3.8.2"
+        "winston": "3.8.2",
+        "shared": "file:../shared"
     },
     "devDependencies": {
         "@types/amqplib": "0.10.1",

@@ -58,9 +58,6 @@ export default class SocketTransport {
     }
 
     onDisconnect = () => {
-        if (this.socket.callId) {
-            this.io.to(this.socket.callId).emit(`call:${CallEvents.REMOVE_PEER}`, { peerId: this.socket?.user?.id });
-        }
         this.socket.disconnect();
     };
 }

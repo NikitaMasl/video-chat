@@ -1,0 +1,14 @@
+{
+  "name": "monorepo",
+  "private": false,
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend",
+    "socket",
+    "chat-sockets"
+  ],
+  "engines": {
+    "node": ">=18.6"
+  }
+}

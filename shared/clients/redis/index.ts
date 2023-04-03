@@ -2,11 +2,11 @@ import Redis from 'ioredis';
 import winston from 'winston';
 import {
     IRedisClient,
-    RedisConsumeStreamOptions,
     RedisPublishStreamOptions,
     RedisReadOptions,
     RedisWriteOptions,
     RedisConnectionOptions,
+    RedisConsumeStreamInRangeOptions,
 } from './types';
 
 export class RedisClient implements IRedisClient {
@@ -17,17 +17,15 @@ export class RedisClient implements IRedisClient {
     }
 
     public connect(options: RedisConnectionOptions): void {
-        const { port, host, ...restOptions } = options;
-
         try {
-            this._client = new Redis(port, host, restOptions);
+            this._client = new Redis(options);
 
             // XADD with argument transformer to accept an object...
             Redis.Command.setArgumentTransformer('xadd', function (args) {
                 if (args.length === 3) {
                     const argArray = [];
 
-                    argArray.push(args[0], args[1]); // Key Name & ID.
+                    argArray.push(args[0], 'MAXLEN', '~', '10000', args[1]); // Stream name & max entities in stream & ID.
 
                     // Transform object into array of field name then value.
                     const fieldNameValuePairs = args[2];
@@ -40,6 +38,31 @@ export class RedisClient implements IRedisClient {
                 }
 
                 return args;
+            });
+
+            Redis.Command.setReplyTransformer('xrange', function (result) {
+                if (Array.isArray(result)) {
+                    const newResult = [];
+                    for (const r of result) {
+                        const obj: Record<string, unknown> = {
+                            id: r[0],
+                        };
+
+                        const fieldNamesValues = r[1];
+
+                        for (let n = 0; n < fieldNamesValues.length; n += 2) {
+                            const k = fieldNamesValues[n];
+                            const v = fieldNamesValues[n + 1];
+                            obj[k] = v;
+                        }
+
+                        newResult.push(obj);
+                    }
+
+                    return newResult;
+                }
+
+                return result;
             });
 
             this._logger({ level: 'info', message: `Redis client succesfuly created` });
@@ -78,7 +101,9 @@ export class RedisClient implements IRedisClient {
         const { streamKey, data } = options;
 
         try {
-            this._client?.xadd(streamKey, '*', JSON.stringify(data));
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            this._client?.xadd(streamKey, '*', data);
         } catch (e) {
             this._logger({
                 level: 'error',
@@ -87,36 +112,14 @@ export class RedisClient implements IRedisClient {
         }
     }
 
-    public async consumeStream(options: RedisConsumeStreamOptions) {
-        const { streamKey, callback } = options;
+    public async consumeStreamInRange<T>(options: RedisConsumeStreamInRangeOptions) {
+        const { streamKey, rangeFromInMs = '-', rangeToInMs = '+' } = options;
 
-        this._client?.xread('COUNT', 0, 'STREAMS', streamKey, '$', (err: any, stream: any) => {
-            if (err) {
-                this._logger({
-                    level: 'error',
-                    message: `Redis consume failed for stream with key ${streamKey} with error ${err}`,
-                });
-            }
-            console.log({ stream });
-            if (stream) {
-                const messages = stream[0][1];
-                messages.forEach((message: any) => {
-                    const id = message[0];
-                    const values = message[1];
-                    const msgObject = { id: id };
+        const items = await this._client?.xrange(streamKey, rangeFromInMs, rangeToInMs);
 
-                    console.log({ values });
-
-                    // for (let i = 0; i < values.length; i = i + 2) {
-                    //     msgObject[values[i]] = values[i + 1];
-                    // }
-
-                    callback(msgObject);
-                });
-            } else {
-                // No message in the consumer buffer
-                console.log('No new message...');
-            }
-        });
+        return {
+            key: streamKey,
+            items: items as T,
+        };
     }
 }

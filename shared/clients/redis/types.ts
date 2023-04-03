@@ -21,9 +21,15 @@ export type RedisPublishStreamOptions = {
     data: Record<string, unknown>;
 };
 
-export type RedisConsumeStreamOptions = {
+export type RedisConsumeStreamInRangeOptions = {
     streamKey: string;
-    callback: ({ id }: { id: string }) => Promise<void>;
+    rangeFromInMs?: number;
+    rangeToInMs?: number;
+};
+
+export type RedisConsumeStreamInRangeReturnType<T> = {
+    key: string;
+    items: T[];
 };
 
 export interface IRedisClient {
@@ -31,5 +37,5 @@ export interface IRedisClient {
     write(options: RedisWriteOptions): Promise<void>;
     read(options: RedisReadOptions): Promise<Record<string, unknown> | null>;
     publishStream(options: RedisPublishStreamOptions): Promise<void>;
-    consumeStream(options: RedisConsumeStreamOptions): Promise<void>;
+    consumeStreamInRange<T>(options: RedisConsumeStreamInRangeOptions): Promise<RedisConsumeStreamInRangeReturnType<T>>;
 }

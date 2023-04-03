@@ -5,7 +5,7 @@ import passport from 'passport';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
-// import { RedisClient } from 'shared/';
+import { RedisClient } from 'shared/clients/redis';
 import vars from './common/vars';
 import { log } from './common/logger';
 import routes from './routes';
@@ -14,7 +14,7 @@ import { withSanitizer } from './middlewares/withSanitizer';
 import mongoose from './common/mongoose';
 import { initJwtStrategy } from './common/auth';
 
-const { isLocal, clientUrl, env, port } = vars;
+const { isLocal, clientUrl, env, port, redis: redisConf } = vars;
 
 export async function run(): Promise<void> {
     await mongoose.connect();
@@ -42,7 +42,13 @@ export async function run(): Promise<void> {
         }),
     );
 
-    // const redis = new RedisClient();
+    const redis = new RedisClient(log);
+
+    redis.connect({
+        port: redisConf.port,
+        host: redisConf.host,
+        password: redisConf.password,
+    });
 
     app.use('/api', routes);
 

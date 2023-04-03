@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
-import { parseBoolean } from '../utils/parsers/parseBoolean';
-import { parseNumber } from '../utils/parsers/parseNumber';
-import { parseString } from '../utils/parsers/parseString';
+import { parseString, parseNumber, parseBoolean } from 'shared/utils/parsers';
 
 dotenv.config();
 
@@ -19,6 +17,12 @@ const vars = {
         cookieSecret: parseString(process.env.USERS_AUTH_COOKIESECRET, '123456'),
         accessTokenMaxAgeInMs: 7 * 24 * 60 * 60 * 1000, // 7 days
         domain: parseString(process.env.COOKIE_DOMAIN, 'localhost'),
+    },
+    redis: {
+        port: parseNumber(process.env.REDIS_PORT, 16379),
+        host: parseString(process.env.REDIS_HOST, 'localhost'),
+        username: parseString(process.env.REDIS_USERNAME, 'redis'),
+        password: parseString(process.env.REDIS_PASSWORD, 'Qwerty12345!'),
     },
 };
 
