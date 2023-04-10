@@ -3,6 +3,7 @@ import httpStatus from 'http-status-codes';
 
 import userRouter from './user/router';
 import callRouter from './call/router';
+import messagesRouter from './messages/router';
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.get('/', (req, res) => {
 
 router.use('/user', userRouter);
 router.use('/call', callRouter);
+router.use('/messages', messagesRouter);
 
 export default router;

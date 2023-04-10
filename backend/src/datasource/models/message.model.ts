@@ -3,21 +3,26 @@ import uniqueValidator from 'mongoose-unique-validator';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { IMessage } from '../types';
 
-const messageScheme = new Schema({
-    text: {
-        type: String,
-        required: true,
+const messageScheme = new Schema(
+    {
+        text: {
+            type: String,
+            required: true,
+        },
+        senderName: {
+            type: String,
+            required: true,
+        },
+        senderId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
     },
-    senderName: {
-        type: String,
-        required: true,
+    {
+        timestamps: true,
     },
-    senderId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-});
+);
 
 messageScheme.plugin(uniqueValidator);
 
