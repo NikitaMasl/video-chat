@@ -13,5 +13,8 @@
         "unMuteMic": "Turn on microphone",
         "muteCam": "Turn off camera",
         "unMuteCam": "Turn on camera"
+    },
+    "textChat": {
+        "inputPlaceholder": "Write your message..."
     }
 }

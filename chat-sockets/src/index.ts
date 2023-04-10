@@ -24,11 +24,7 @@ export async function run(): Promise<void> {
         password: redisConf.password,
     });
 
-    redis.consumeStreamInRange({
-        streamKey: 'test',
-    });
-
-    initSocketMessages(io);
+    initSocketMessages(io, redis);
 
     log({ level: 'warn', message: `Socket server started on port ${port} [${env}]` });
 }

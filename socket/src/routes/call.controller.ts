@@ -1,4 +1,5 @@
 import { CallEvents } from '../const/events/call.events';
+import { joinCallPublisher } from '../rabbit/publishers/joinCallPublisher';
 import { EnhancedSocket } from '../types';
 import { getUserInCallRoom } from '../utils/helpers/getUserInCallRoom';
 import SocketTransport from '../utils/socket/SocketTransport';
@@ -32,6 +33,8 @@ const joinHandler = async (socketTransport: SocketTransport, data: { callId: str
             });
         }
     });
+
+    joinCallPublisher({ callId });
 
     responseCallback(
         {

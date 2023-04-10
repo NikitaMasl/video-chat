@@ -1,4 +1,4 @@
-import { ICall, IUser } from '../../datasource/types';
+import { ICall } from '../../datasource/types';
 import Call from '../../datasource/models/call.model';
 
 type Result = {

@@ -11,7 +11,9 @@ export async function run(): Promise<void> {
     const io = socket(config.server);
 
     io.listen(port as number);
-    // await initConsumers(io);
+
+    await initRabbitMQ(log);
+
     initSocketMessages(io);
 
     log({ level: 'warn', message: `Socket server started on port ${port} [${env}]` });
@@ -19,5 +21,6 @@ export async function run(): Promise<void> {
 
 run().catch((e) => {
     log({ level: 'error', message: e.message });
+    closeRabbitMQ();
     process.exit();
 });

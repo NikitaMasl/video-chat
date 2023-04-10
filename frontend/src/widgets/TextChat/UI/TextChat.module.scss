@@ -1,0 +1,144 @@
+@import '../../../app/styles/rem.scss';
+
+.container {
+    width: 100%;
+    max-width: rem(340px);
+    height: 100%;
+    overflow: hidden;
+
+    .titleWrapper {
+        padding: rem(16px);
+    }
+
+    .groupSelectWrapper {
+        width: 100%;
+        padding: rem(16px);
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .form {
+        width: 100%;
+    }
+
+    .contentContainer {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .list {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .msgsContainer {
+        height: 100%;
+        width: 100%;
+        padding: rem(16px 16px 0 16px);
+
+        .messageContainer {
+            margin-bottom: rem(16px);
+            &:hover {
+                .msgSettingBtn {
+                    opacity: 1;
+                }
+            }
+
+            .defaultWrapper {
+                min-width: rem(32px);
+            }
+        }
+
+        .pointDivider {
+            margin-left: rem(5px);
+            margin-right: rem(5px);
+        }
+        .msgContent {
+            margin-left: rem(6px);
+        }
+
+        .msgTextContainer {
+            width: 100%;
+            padding: rem(8px 16px 8px 16px);
+            border-radius: rem(0px 8px 8px 8px);
+            background: var(--gray-8);
+            word-wrap: break-word;
+            white-space: wrap;
+        }
+
+        .myMsg {
+            background: var(--black);
+            color: var(--white);
+        }
+    }
+
+    .contentEditableWrapper {
+        width: 100%;
+        padding: rem(16px);
+
+        .contentEditableInput {
+            box-sizing: border-box;
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+
+            overflow-wrap: break-word;
+            outline: none;
+            color: var(--black);
+
+            cursor: text;
+        }
+
+        .sendBtn {
+            min-height: 0;
+            padding: 0;
+            margin-left: rem(8px);
+            margin-bottom: rem(8px);
+            width: rem(36px);
+            min-width: rem(36px);
+            height: rem(36px);
+            background: var(--light-blue-09);
+            box-shadow: 0px 8px 10px rgba(115, 118, 135, 0.1);
+            border-radius: rem(6px);
+
+            .sendIcon {
+                width: rem(24px);
+                height: rem(24px);
+                color: var(--white);
+            }
+
+            &.disabled {
+                pointer-events: none;
+                .sendIcon {
+                    color: var(--dark-grey);
+                }
+            }
+        }
+    }
+}
+
+.noMsgPlag {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .noMsgsIcon {
+        width: rem(132px);
+        height: rem(125px);
+    }
+}
+
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: rem(10px);
+}

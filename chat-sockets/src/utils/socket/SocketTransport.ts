@@ -1,7 +1,7 @@
 import { Server, Client } from 'socket.io';
-import { CallEvents } from '../../const/events/call.events';
 import { EnhancedSocket } from '../../types';
 import SocketRouter from './SocketRouter';
+import { RedisClient } from 'shared/clients/redis';
 
 const KEYS = {
     userId: 'id',
@@ -10,12 +10,15 @@ const KEYS = {
 export default class SocketTransport {
     io: Server;
     socket: EnhancedSocket;
+    redis: RedisClient;
     id: string;
 
-    constructor(io: Server, socket: EnhancedSocket, routes: SocketRouter[]) {
+    constructor(io: Server, socket: EnhancedSocket, redis: RedisClient, routes: SocketRouter[]) {
         this.io = io;
 
         this.socket = socket;
+
+        this.redis = redis;
 
         this.id = socket.id;
 

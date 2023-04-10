@@ -1,9 +1,10 @@
-import { CallEvents } from '../const/events/call.events';
+import { getChatMessagesStreamName } from 'shared/utils/chat/getChatMessagesStreamName';
+import type { Message } from 'shared/types';
 import { EnhancedSocket } from '../types';
-import { getUserInCallRoom } from '../utils/helpers/getUserInCallRoom';
 import SocketTransport from '../utils/socket/SocketTransport';
+import { ChatEvents } from 'src/const/events/chat.events';
 
-const BASE_PATH = 'call:';
+const BASE_PATH = 'chat:';
 
 const joinHandler = async (socketTransport: SocketTransport, data: { callId: string }, responseCallback: any) => {
     const { callId } = data;
@@ -25,16 +26,28 @@ const joinHandler = async (socketTransport: SocketTransport, data: { callId: str
     );
 };
 
-const sendMessage = async (socketTransport: SocketTransport, data: { callId: string }, responseCallback: any) => {
-    const { callId } = data;
-    const { socket, io } = socketTransport;
+const sendMessage = async (socketTransport: SocketTransport, data: { text: string }, responseCallback: any) => {
+    const { text } = data;
+    const {
+        socket: { user, callId },
+        io,
+        redis,
+    } = socketTransport;
 
-    responseCallback(
-        {
-            peerId: socket?.user?.id,
-        },
-        null,
-    );
+    if (!user || !callId) {
+        responseCallback(null, 'Anauthorized error');
+        return;
+    }
+
+    const message: Message = {
+        text,
+        senderName: user.username || '',
+        senderId: user.id || '',
+    };
+
+    redis.publishStream({ streamKey: getChatMessagesStreamName(callId), data: message });
+
+    io.to(callId).emit(`${BASE_PATH}${ChatEvents.SEND_MESSAGE}`, { message });
 };
 
 export default {

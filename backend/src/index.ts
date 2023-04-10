@@ -13,6 +13,7 @@ import error from './middlewares/errorHandler';
 import { withSanitizer } from './middlewares/withSanitizer';
 import mongoose from './common/mongoose';
 import { initJwtStrategy } from './common/auth';
+import { closeRabbitMQ, initRabbitMQ } from './rabbit';
 
 const { isLocal, clientUrl, env, port, redis: redisConf } = vars;
 
@@ -50,6 +51,8 @@ export async function run(): Promise<void> {
         password: redisConf.password,
     });
 
+    await initRabbitMQ(log, redis);
+
     app.use('/api', routes);
 
     const server = http.createServer(app);
@@ -61,5 +64,6 @@ export async function run(): Promise<void> {
 
 run().catch((e) => {
     log({ level: 'error', message: e.message });
+    closeRabbitMQ();
     process.exit();
 });

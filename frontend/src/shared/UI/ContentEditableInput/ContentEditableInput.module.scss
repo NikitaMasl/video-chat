@@ -1,0 +1,72 @@
+@import '../../../app/styles/rem.scss';
+
+.container {
+    width: 100%;
+    min-height: rem(52px);
+    position: relative;
+    padding-right: rem(8px);
+    background: var(--light-gray);
+    border: rem(1px) solid var(--dark-blue);
+    border-radius: rem(8px);
+
+    :global {
+        .DraftEditor-root {
+            width: 100%;
+            max-width: rem(250px);
+            min-height: rem(52px);
+            padding: rem(15px 0 15px 12px);
+            position: relative;
+            background: var(--light-gray);
+            border-radius: rem(8px);
+        }
+        .public-DraftEditorPlaceholder-inner {
+            pointer-events: none;
+            position: absolute;
+        }
+        .public-DraftEditor-content {
+            width: 100%;
+            min-width: rem(20px);
+            max-height: rem(176px);
+            min-height: rem(22px);
+            font-family: var(--font-family-default);
+            line-height: rem(22px);
+            font-size: var(--text-size-s4);
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            &::-webkit-scrollbar {
+                border-radius: rem(10px);
+                width: rem(6px);
+                margin-left: rem(10px);
+            }
+            &::-webkit-scrollbar-track {
+                width: rem(6px);
+                padding-left: rem(2px);
+                border-radius: rem(14px);
+            }
+            &::-webkit-scrollbar-thumb {
+                width: rem(6px);
+                border-radius: rem(10px);
+                background: var(--dark-gray);
+            }
+        }
+        .public-DraftStyleDefault-block,
+        .public-DraftStyleDefault-ltr {
+            padding-right: rem(1px);
+        }
+
+        .public-DraftEditorPlaceholder-root {
+            position: absolute;
+            color: var(--gray-50);
+            width: 100%;
+            pointer-events: inherit;
+        }
+        .RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+            display: none;
+        }
+    }
+}
+.editorRoot {
+    z-index: 1000;
+    width: 100%;
+}

@@ -19,6 +19,13 @@ const callScheme = new Schema({
             userId: String,
         },
     ],
+    nobodyInCallSince: {
+        type: Date,
+        default: null,
+    },
+    chatMessagesListenerWorks: {
+        type: Boolean,
+    },
 });
 
 callScheme.plugin(uniqueValidator);

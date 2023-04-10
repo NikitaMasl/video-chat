@@ -117,6 +117,8 @@ export class RedisClient implements IRedisClient {
 
         const items = await this._client?.xrange(streamKey, rangeFromInMs, rangeToInMs);
 
+        console.log({ items });
+
         return {
             key: streamKey,
             items: items as T,

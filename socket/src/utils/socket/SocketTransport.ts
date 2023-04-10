@@ -2,6 +2,7 @@ import { Server, Client } from 'socket.io';
 import { CallEvents } from '../../const/events/call.events';
 import { EnhancedSocket } from '../../types';
 import SocketRouter from './SocketRouter';
+import { nobodyInCallPublisher } from '../../rabbit/publishers/nobodyInCallPublisher';
 
 const KEYS = {
     userId: 'id',
@@ -59,6 +60,14 @@ export default class SocketTransport {
 
     onDisconnect = () => {
         if (this.socket.callId) {
+            const clients = Object.values(this.io.in(this.socket.callId).sockets);
+
+            if (clients.length === 0) {
+                const now = new Date().getTime();
+
+                nobodyInCallPublisher({ since: now, callId: this.socket.callId });
+            }
+
             this.io.to(this.socket.callId).emit(`call:${CallEvents.REMOVE_PEER}`, { peerId: this.socket?.user?.id });
         }
         this.socket.disconnect();
